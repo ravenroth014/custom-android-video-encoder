@@ -5,13 +5,26 @@ object VideoEncoderBridge {
 
     @JvmStatic
     fun encodeRgbaVideo(
-        path: String,
+        cachePath: String,
+        savePath: String,
         width: Int,
         height: Int,
         frameRate: Int,
         rgbaList: List<ByteArray>
     ) {
-        encoder = VideoEncoder(path, width, height, frameRate)
+        encoder = VideoEncoder(cachePath, savePath, width, height, frameRate)
         encoder?.encode(rgbaList)
+    }
+
+    @JvmStatic
+    fun encodeRgbaImageVideo(
+        cachePath: String,
+        savePath: String,
+        width: Int,
+        height: Int,
+        frameRate: Int
+    ){
+        encoder = VideoEncoder(cachePath, savePath, width, height, frameRate)
+        encoder?.encodeFromPngFrames()
     }
 }
