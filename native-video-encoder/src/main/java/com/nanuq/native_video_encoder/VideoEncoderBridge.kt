@@ -3,6 +3,9 @@ package com.nanuq.native_video_encoder
 import android.os.Environment
 import android.util.Log
 import java.io.File
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 object VideoEncoderBridge {
     private var encoder: VideoEncoder? = null
@@ -43,7 +46,8 @@ object VideoEncoderBridge {
         height: Int,
         frameRate: Int,
         sampleRate: Int,
-        channels: Int
+        channels: Int,
+        isDebug: Boolean
     ){
         try {
             val pcmFile = File.createTempFile("audio_pcm_",".pcm")
@@ -78,9 +82,31 @@ object VideoEncoderBridge {
             videoOnlyFile.delete()
 
             Log.i("VideoEncoderBridge", "Encoding successful")
+
+            if (isDebug){
+                copyDebugFrames(imageFolderPath)
+            }
         }
         catch (e: Exception){
             Log.e("VideoEncoderBridge", "Encoding failed", e)
+        }
+    }
+
+    private fun copyDebugFrames(imageFolderPath: String) {
+        val timeStamp = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.US).format(Date())
+        val debugDir = File(
+            Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM),
+            "DebugFrames/Encode_$timeStamp"
+        )
+
+        if (!debugDir.exists()) {
+            debugDir.mkdirs()
+        }
+
+        val sourceDir = File(imageFolderPath)
+        sourceDir.listFiles { _, name -> name.endsWith(".png") }?.forEach { file ->
+            val destFile = File(debugDir, file.name)
+            file.copyTo(destFile, overwrite = true)
         }
     }
 }

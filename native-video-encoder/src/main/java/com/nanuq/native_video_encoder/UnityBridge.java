@@ -32,8 +32,9 @@ public class UnityBridge {
             int height,
             int frameRate,
             int sampleRate,
-            int channels
+            int channels,
+            boolean isDebug
     ){
-        VideoEncoderBridge.INSTANCE.encodeRgbaImageVideo(imageFolderPath, audioPcmData, savePath, width, height, frameRate, sampleRate, channels);
+        VideoEncoderBridge.INSTANCE.encodeRgbaImageVideo(imageFolderPath, audioPcmData, savePath, width, height, frameRate, sampleRate, channels, isDebug);
     }
 }
