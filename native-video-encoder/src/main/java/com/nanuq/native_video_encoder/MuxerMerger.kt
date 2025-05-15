@@ -20,12 +20,14 @@ class MuxerMerger (
 
         val muxer = MediaMuxer(outputPath, MediaMuxer.OutputFormat.MUXER_OUTPUT_MPEG_4)
         val trackIndexMap = mutableMapOf<Int, Int>()
+        var videoDurationUs: Long = Long.MAX_VALUE
 
         // Add video track
         for (i in 0 until videoExtractor.trackCount){
             val format = videoExtractor.getTrackFormat(i)
             if (format.getString(MediaFormat.KEY_MIME)?.startsWith("video/") == true){
                 videoExtractor.selectTrack(i)
+                videoDurationUs = format.getLong(MediaFormat.KEY_DURATION)
                 val muxerTrackIndex = muxer.addTrack(format)
                 trackIndexMap[i] = muxerTrackIndex
                 break
@@ -39,6 +41,7 @@ class MuxerMerger (
                 audioExtractor.selectTrack(i)
                 val muxerTrackIndex = muxer.addTrack(format)
                 trackIndexMap[i + 1000] = muxerTrackIndex // offset to distinguish audio
+                break
             }
         }
 
@@ -66,6 +69,11 @@ class MuxerMerger (
                 }
 
                 val trackIndex = extractor.sampleTrackIndex + offset
+
+                if (!isVideo && bufferInfo.presentationTimeUs > videoDurationUs) {
+                    break
+                }
+
                 muxer.writeSampleData(trackIndexMap[trackIndex]!!, buffer, bufferInfo)
                 extractor.advance()
             }
