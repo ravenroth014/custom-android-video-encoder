@@ -8,34 +8,6 @@ import java.util.Date
 import java.util.Locale
 
 object VideoEncoderBridge {
-    private var encoder: VideoEncoder? = null
-
-    @JvmStatic
-    fun encodeRgbaVideo(
-        imageFolderPath: String,
-        audioFilePath: String,
-        savePath: String,
-        width: Int,
-        height: Int,
-        frameRate: Int,
-        rgbaList: List<ByteArray>
-    ) {
-//        encoder = VideoEncoder(imageFolderPath, audioFilePath, savePath, width, height, frameRate)
-//        encoder?.encode(rgbaList)
-    }
-
-    @JvmStatic
-    fun encodeRgbaImageVideo(
-        imageFolderPath: String,
-        audioFilePath: String,
-        savePath: String,
-        width: Int,
-        height: Int,
-        frameRate: Int
-    ){
-//        encoder = VideoEncoder(imageFolderPath, audioFilePath, savePath, width, height, frameRate)
-//        encoder?.encodeFromPngFrames()
-    }
 
     @JvmStatic
     fun encodeRgbaImageVideo(
