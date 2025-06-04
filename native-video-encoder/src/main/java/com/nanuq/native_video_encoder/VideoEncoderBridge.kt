@@ -69,7 +69,7 @@ object VideoEncoderBridge {
         imageFolderPath: String,
         listenerAudioPcmData: ByteArray,
         clientVoiceAudioPcmData: ByteArray?,
-        savePath: String?,
+        saveFolder: String?,
         width: Int,
         height: Int,
         frameRate: Int,
@@ -103,12 +103,29 @@ object VideoEncoderBridge {
                 frameRate = frameRate
             ).encodeByPngFrames()
 
+            val outputPath = if (saveFolder.isNullOrEmpty()){
+                val movieDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MOVIES)
+                val defaultDir = File(movieDir, "VideoEncoder")
+                if (!defaultDir.exists()){
+                    defaultDir.mkdirs()
+                }
+                File(defaultDir, "Video_${System.currentTimeMillis()}.mp4").absolutePath
+            } else {
+                val movieDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MOVIES)
+                val customDir = File(movieDir, saveFolder)
+                if (!customDir.exists()){
+                    customDir.mkdirs()
+                }
+                File(customDir, "Video_${System.currentTimeMillis()}.mp4").absolutePath
+            }
+
             MuxerMerger(
                 videoPath = videoOnlyFile.absolutePath,
                 audioPath = aacFile.absolutePath,
-                outputPath = savePath ?: File(Environment.getExternalStoragePublicDirectory(
-                    Environment.DIRECTORY_MOVIES),
-                    "Video_${System.currentTimeMillis()}.mp4").absolutePath
+                outputPath = outputPath
+//                outputPath = saveFolder ?: File(Environment.getExternalStoragePublicDirectory(
+//                    Environment.DIRECTORY_MOVIES),
+//                    "Video_${System.currentTimeMillis()}.mp4").absolutePath
             ).merge()
 
             pcmFile.delete()

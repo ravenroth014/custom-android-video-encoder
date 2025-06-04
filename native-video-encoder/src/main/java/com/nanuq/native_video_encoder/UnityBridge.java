@@ -19,7 +19,7 @@ public class UnityBridge {
             String imageFolderPath,
             byte[] listenerAudioPcmData,
             byte[] clientVoiceAudioPcmData,
-            String savePath,
+            String saveFolder,
             int width,
             int height,
             int frameRate,
@@ -27,6 +27,6 @@ public class UnityBridge {
             int channels,
             boolean isDebug
     ){
-        VideoEncoderBridge.INSTANCE.encodeRgbaImageVideo(imageFolderPath, listenerAudioPcmData, clientVoiceAudioPcmData, savePath, width, height, frameRate, sampleRate, channels, isDebug);
+        VideoEncoderBridge.INSTANCE.encodeRgbaImageVideo(imageFolderPath, listenerAudioPcmData, clientVoiceAudioPcmData, saveFolder, width, height, frameRate, sampleRate, channels, isDebug);
     }
 }
