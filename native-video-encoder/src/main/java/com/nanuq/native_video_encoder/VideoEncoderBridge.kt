@@ -68,7 +68,7 @@ object VideoEncoderBridge {
     fun encodeRgbaImageVideo(
         imageFolderPath: String,
         listenerAudioPcmData: ByteArray,
-        clientVoiceAudioPcmData: ByteArray,
+        clientVoiceAudioPcmData: ByteArray?,
         savePath: String?,
         width: Int,
         height: Int,
